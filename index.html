@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天堂无人极品 - 智能影像,重新定义无人之境</title>
+<meta name="description" content="天堂无人极品是专注于智能无人影像与极限场景视觉的品牌，用无人设备记录地球上最难抵达的绝美画面，为用户带来极致沉浸式视觉体验。">
+<style>
+:root{
+  --bg-deep:#050912;
+  --bg-mid:#0a1220;
+  --bg-soft:#0f1b2d;
+  --glass:rgba(18,30,50,0.55);
+  --glass-line:rgba(120,180,255,0.14);
+  --accent:#38bdf8;
+  --accent-2:#a78bfa;
+  --accent-3:#34d399;
+  --text:#e8f1ff;
+  --text-dim:#8fa6c4;
+  --text-faint:#5b6f8a;
+  --radius:18px;
+  --max:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  background:var(--bg-deep);
+  color:var(--text);
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+::selection{background:rgba(56,189,248,0.35);color:#fff;}
+
+/* ---------- ambient background ---------- */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.ambient::before{
+  content:"";position:absolute;width:900px;height:900px;border-radius:50%;
+  top:-320px;right:-260px;
+  background:radial-gradient(circle,rgba(56,189,248,0.16),transparent 65%);
+  filter:blur(20px);
+}
+.ambient::after{
+  content:"";position:absolute;width:820px;height:820px;border-radius:50%;
+  bottom:-360px;left:-260px;
+  background:radial-gradient(circle,rgba(167,139,250,0.14),transparent 65%);
+  filter:blur(20px);
+}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,0.55) 50%,transparent),
+  radial-gradient(1px 1px at 70% 15%,rgba(255,255,255,0.4) 50%,transparent),
+  radial-gradient(1.5px 1.5px at 45% 65%,rgba(160,220,255,0.5) 50%,transparent),
+  radial-gradient(1px 1px at 85% 75%,rgba(255,255,255,0.35) 50%,transparent),
+  radial-gradient(1px 1px at 12% 82%,rgba(200,180,255,0.45) 50%,transparent);
+  background-size:100% 100%;opacity:.7;}
+
+/* ---------- nav ---------- */
+header.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  transition:background .35s,backdrop-filter .35s,border-color .35s;
+  border-bottom:1px solid transparent;
+}
+header.nav.scrolled{
+  background:rgba(5,9,18,0.78);
+  backdrop-filter:blur(16px);
+  border-bottom-color:var(--glass-line);
+}
+.nav-inner{
+  max-width:var(--max);margin:0 auto;padding:18px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.5px;font-size:19px;}
+.logo-mark{
+  width:36px;height:36px;border-radius:11px;position:relative;flex:none;
+  background:linear-gradient(135deg,#38bdf8,#a78bfa);
+  box-shadow:0 0 22px rgba(56,189,248,0.5);
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-mark svg{width:21px;height:21px;}
+.logo span b{color:var(--accent);}
+nav.menu{display:flex;gap:30px;font-size:14.5px;color:var(--text-dim);}
+nav.menu a{transition:color .25s;position:relative;}
+nav.menu a::after{
+  content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  transition:width .3s;border-radius:2px;
+}
+nav.menu a:hover{color:#fff;}
+nav.menu a:hover::after{width:100%;}
+.nav-cta{
+  padding:9px 22px;border-radius:11px;font-size:14px;font-weight:600;
+  background:linear-gradient(135deg,rgba(56,189,248,0.9),rgba(167,139,250,0.9));
+  color:#04101f;transition:transform .25s,box-shadow .25s;white-space:nowrap;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(56,189,248,0.35);}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;}
+.burger i{width:24px;height:2px;background:var(--text);border-radius:2px;transition:.3s;}
+
+/* ---------- hero ---------- */
+section.hero{
+  position:relative;z-index:2;min-height:100vh;padding:160px 28px 90px;
+  display:flex;align-items:center;
+}
+.hero-wrap{max-width:var(--max);margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1.08fr .92fr;gap:60px;align-items:center;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:9px;font-size:13px;
+  padding:7px 16px;border-radius:100px;color:var(--accent);
+  background:rgba(56,189,248,0.09);border:1px solid rgba(56,189,248,0.25);
+  margin-bottom:26px;letter-spacing:.4px;
+}
+.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 0 rgba(56,189,248,0.7);animation:pulse 2s infinite;}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(56,189,248,0.7);}
+  70%{box-shadow:0 0 0 10px rgba(56,189,248,0);}
+  100%{box-shadow:0 0 0 0 rgba(56,189,248,0);}
+}
+h1.hero-title{
+  font-size:clamp(42px,6vw,74px);line-height:1.08;font-weight:900;
+  letter-spacing:-1px;margin-bottom:26px;
+}
+h1.hero-title .grad{
+  background:linear-gradient(100deg,#38bdf8 0%,#a78bfa 50%,#34d399 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-sub{font-size:17.5px;color:var(--text-dim);max-width:540px;margin-bottom:40px;}
+.hero-sub strong{color:#fff;font-weight:600;}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:54px;}
+.btn{
+  padding:14px 32px;border-radius:13px;font-size:15px;font-weight:600;
+  cursor:pointer;border:none;transition:transform .25s,box-shadow .25s,background .25s;
+  display:inline-flex;align-items:center;gap:9px;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#38bdf8,#6366f1);color:#04101f;
+  box-shadow:0 12px 34px rgba(56,189,248,0.32);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(99,102,241,0.45);}
+.btn-ghost{
+  background:rgba(255,255,255,0.04);color:var(--text);
+  border:1px solid var(--glass-line);
+}
+.btn-ghost:hover{background:rgba(255,255,255,0.09);transform:translateY(-3px);}
+
+.hero-stats{display:flex;gap:44px;flex-wrap:wrap;}
+.stat b{display:block;font-size:30px;font-weight:800;
+  background:linear-gradient(120deg,#fff,#8fa6c4);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat span{font-size:13px;color:var(--text-faint);letter-spacing:.5px;}
+
+/* hero visual */
+.hero-visual{position:relative;perspective:1000px;}
+.viewer-card{
+  position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/3.4;
+  background:radial-gradient(circle at 30% 20%,#12233d,#060c17 75%);
+  border:1px solid var(--glass-line);
+  box-shadow:0 40px 90px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.06);
+  animation:float 7s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0) rotateX(0deg);}50%{transform:translateY(-14px) rotateX(1.5deg);}}
+.viewer-card svg.scene{position:absolute;inset:0;width:100%;height:100%;}
+.viewer-overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 55%,rgba(5,9,18,0.85));
+}
+.hud{
+  position:absolute;left:20px;right:20px;top:18px;display:flex;justify-content:space-between;
+  font-family:ui-monospace,Menlo,monospace;font-size:11px;color:rgba(180,220,255,0.72);letter-spacing:1px;
+}
+.hud .rec{display:flex;align-items:center;gap:6px;color:#ff5f6d;}
+.hud .rec i{width:8px;height:8px;border-radius:50%;background:#ff5f6d;animation:blink 1.3s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
+.hud-bot{
+  position:absolute;left:20px;right:20px;bottom:18px;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  font-family:ui-monospace,Menlo,monospace;font-size:11px;color:rgba(180,220,255,0.65);
+}
+.hud-bot .big{font-size:16px;color:#fff;letter-spacing:2px;}
+.floating-tag{
+  position:absolute;padding:9px 15px;border-radius:12px;font-size:12.5px;
+  background:rgba(10,20,34,0.85);backdrop-filter:blur(10px);
+  border:1px solid var(--glass-line);color:var(--accent);
+  box-shadow:0 14px 34px rgba(0,0,0,0.45);
+}
+.tag-a{top:8%;right:-6%;animation:float 6s ease-in-out infinite .6s;}
+.tag-b{bottom:14%;left:-8%;color:var(--accent-3);animation:float 8s ease-in-out infinite 1.2s;}
+
+/* ---------- marquee strip ---------- */
+.strip{
+  position:relative;z-index:2;overflow:hidden;
+  border-top:1px solid var(--glass-line);border-bottom:1px solid var(--glass-line);
+  background:rgba(10,18,32,0.5);padding:20px 0;
+}
+.strip-track{display:flex;gap:64px;white-space:nowrap;width:max-content;
+  animation:scroll 34s linear infinite;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.strip-track span{font-size:14px;color:var(--text-faint);letter-spacing:2px;display:inline-flex;align-items:center;gap:14px;}
+.strip-track span::after{content:"◆";color:var(--accent);font-size:9px;}
+
+/* ---------- generic section ---------- */
+section.block{position:relative;z-index:2;padding:110px 28px;}
+.wrap{max-width:var(--max);margin:0 auto;}
+.sec-head{margin-bottom:64px;max-width:720px;}
+.sec-kicker{
+  font-size:13px;letter-spacing:4px;color:var(--accent);font-weight:600;
+  text-transform:uppercase;margin-bottom:16px;display:inline-flex;align-items:center;gap:10px;
+}
+.sec-kicker::before{content:"";width:26px;height:2px;background:var(--accent);border-radius:2px;}
+h2.sec-title{font-size:clamp(30px,4vw,46px);line-height:1.16;font-weight:800;letter-spacing:-.5px;margin-bottom:20px;}
+.sec-desc{color:var(--text-dim);font-size:16.5px;}
+
+/* ---------- features ---------- */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.feature{
+  position:relative;padding:34px 30px;border-radius:var(--radius);
+  background:linear-gradient(160deg,rgba(18,30,50,0.7),rgba(9,16,28,0.7));
+  border:1px solid var(--glass-line);overflow:hidden;
+  transition:transform .35s,border-color .35s,box-shadow .35s;
+}
+.feature::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:opacity .35s;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,0%),rgba(56,189,248,0.14),transparent 60%);
+}
+.feature:hover{transform:translateY(-8px);border-color:rgba(56,189,248,0.4);box-shadow:0 26px 60px rgba(0,0,0,0.5);}
+.feature:hover::before{opacity:1;}
+.f-icon{
+  width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;position:relative;
+  background:linear-gradient(135deg,rgba(56,189,248,0.18),rgba(167,139,250,0.14));
+  border:1px solid rgba(56,189,248,0.28);
+}
+.f-icon svg{width:25px;height:25px;stroke:var(--accent);fill:none;stroke-width:1.7;}
+.feature h3{font-size:19px;margin-bottom:12px;font-weight:700;position:relative;}
+.feature p{font-size:14.5px;color:var(--text-dim);position:relative;}
+
+/* ---------- spectrum section ---------- */
+.spectrum{background:linear-gradient(180deg,transparent,rgba(10,18,32,0.5),transparent);}
+.scene-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px;grid-auto-rows:220px;}
+.scene-tile{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--glass-line);cursor:pointer;
+  transition:transform .4s,border-color .4s;
+}
+.scene-tile:hover{transform:scale(1.02);border-color:rgba(56,189,248,0.4);}
+.scene-tile.tall{grid-row:span 2;}
+.scene-tile svg{position:absolute;inset:0;width:100%;height:100%;}
+.scene-tile .label{
+  position:absolute;left:0;right:0;bottom:0;padding:26px 22px 18px;
+  background:linear-gradient(transparent,rgba(4,8,16,0.9));
+  font-size:15px;font-weight:600;
+}
+.scene-tile .label small{display:block;font-size:12px;color:var(--text-faint);font-weight:400;letter-spacing:1px;margin-top:3px;}
+
+/* ---------- story / timeline ---------- */
+.timeline{position:relative;padding-left:38px;}
+.timeline::before{
+  content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;
+  background:linear-gradient(180deg,var(--accent),var(--accent-2),transparent);
+}
+.tl-item{position:relative;padding-bottom:44px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{
+  content:"";position:absolute;left:-33px;top:6px;width:14px;height:14px;border-radius:50%;
+  background:var(--bg-deep);border:2px solid var(--accent);box-shadow:0 0 14px rgba(56,189,248,0.6);
+}
+.tl-year{font-family:ui-monospace,monospace;font-size:13px;color:var(--accent);letter-spacing:2px;margin-bottom:8px;}
+.tl-item h4{font-size:19px;margin-bottom:8px;}
+.tl-item p{color:var(--text-dim);font-size:14.5px;max-width:620px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start;}
+
+/* ---------- tech bars ---------- */
+.tech-card{
+  padding:34px;border-radius:var(--radius);
+  background:linear-gradient(160deg,rgba(18,30,50,0.72),rgba(9,16,28,0.72));
+  border:1px solid var(--glass-line);
+}
+.tech-row{margin-bottom:26px;}
+.tech-row:last-child{margin-bottom:0;}
+.tech-row .top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px;}
+.tech-row .top span:last-child{color:var(--accent);font-family:ui-monospace,monospace;}
+.bar{height:7px;border-radius:100px;background:rgba(255,255,255,0.07);overflow:hidden;}
+.bar i{display:block;height:100%;border-radius:100px;width:0;
+  background:linear-gradient(90deg,#38bdf8,#a78bfa);transition:width 1.4s cubic-bezier(.2,.8,.2,1);}
+
+/* ---------- products ---------- */
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.prod{
+  padding:32px 28px;border-radius:var(--radius);
+  background:linear-gradient(170deg,rgba(18,30,50,0.75),rgba(8,14,25,0.85));
+  border:1px solid var(--glass-line);position:relative;overflow:hidden;
+  transition:transform .35s,border-color .35s;
+}
+.prod:hover{transform:translateY(-6px);border-color:rgba(167,139,250,0.42);}
+.prod .badge{
+  display:inline-block;font-size:11px;letter-spacing:1.5px;padding:4px 11px;border-radius:100px;
+  background:rgba(167,139,250,0.14);color:var(--accent-2);margin-bottom:20px;
+  border:1px solid rgba(167,139,250,0.28);
+}
+.prod h3{font-size:21px;margin-bottom:10px;}
+.prod .price{font-size:14px;color:var(--text-faint);margin-bottom:20px;}
+.prod .price b{font-size:24px;color:#fff;font-weight:800;font-family:ui-monospace,monospace;}
+.prod ul{list-style:none;font-size:14px;color:var(--text-dim);display:flex;flex-direction:column;gap:10px;}
+.prod ul li{display:flex;gap:9px;align-items:flex-start;}
+.prod ul li::before{content:"✓";color:var(--accent-3);font-weight:800;flex:none;}
+
+/* ---------- community ---------- */
+.comm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.quote{
+  padding:30px 28px;border-radius:var(--radius);
+  background:rgba(14,24,40,0.6);border:1px solid var(--glass-line);
+  display:flex;flex-direction:column;justify-content:space-between;
+  transition:transform .35s,border-color .35s;
+}
+.quote:hover{transform:translateY(-6px);border-color:rgba(52,211,153,0.35);}
+.quote p{font-size:14.5px;color:var(--text-dim);margin-bottom:24px;}
+.quote .who{display:flex;align-items:center;gap:12px;}
+.avatar{
+  width:42px;height:42px;border-radius:50%;flex:none;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;
+  background:linear-gradient(135deg,#38bdf8,#a78bfa);color:#04101f;
+}
+.who .meta b{display:block;font-size:14px;}
+.who .meta span{font-size:12px;color:var(--text-faint);}
+
+/* ---------- numbers band ---------- */
+.band{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  padding:50px 40px;border-radius:24px;
+  background:linear-gradient(120deg,rgba(56,189,248,0.09),rgba(167,139,250,0.09));
+  border:1px solid var(--glass-line);
+}
+.band .item{text-align:center;}
+.band .item b{font-size:38px;font-weight:900;display:block;
+  background:linear-gradient(120deg,#fff,#7fb4e8);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.band .item span{font-size:13px;color:var(--text-faint);letter-spacing:1px;}
+
+/* ---------- CTA ---------- */
+.cta-final{
+  position:relative;z-index:2;padding:0 28px 110px;
+}
+.cta-box{
+  max-width:var(--max);margin:0 auto;border-radius:28px;padding:72px 60px;text-align:center;
+  position:relative;overflow:hidden;
+  background:linear-gradient(140deg,rgba(20,36,62,0.9),rgba(10,16,28,0.95));
+  border:1px solid rgba(56,189,248,0.22);
+}
+.cta-box::before{
+  content:"";position:absolute;width:600px;height:600px;border-radius:50%;
+  top:-300px;left:50%;transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(56,189,248,0.2),transparent 65%);
+}
+.cta-box h2{position:relative;font-size:clamp(28px,4vw,42px);font-weight:800;margin-bottom:18px;}
+.cta-box p{position:relative;color:var(--text-dim);margin-bottom:34px;font-size:16px;}
+.cta-actions{position:relative;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+
+/* ---------- footer ---------- */
+footer{position:relative;z-index:2;border-top:1px solid var(--glass-line);
+  background:rgba(5,9,18,0.85);padding:64px 28px 34px;}
+.foot-wrap{max-width:var(--max);margin:0 auto;}
+.foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;margin-bottom:52px;}
+.foot-brand p{color:var(--text-faint);font-size:14px;margin-top:18px;max-width:280px;}
+.foot-col h5{font-size:13px;letter-spacing:1.5px;color:var(--text);margin-bottom:18px;font-weight:700;}
+.foot-col a{display:block;font-size:14px;color:var(--text-faint);margin-bottom:11px;transition:color .25s;}
+.foot-col a:hover{color:var(--accent);}
+.foot-bot{border-top:1px solid var(--glass-line);padding-top:26px;
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-size:13px;color:var(--text-faint);}
+.foot-bot .links{display:flex;gap:22px;}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+
+/* ---------- responsive ---------- */
+@media(max-width:1024px){
+  .hero-wrap{grid-template-columns:1fr;gap:56px;}
+  .hero-visual{max-width:520px;margin:0 auto;width:100%;}
+  .grid-3,.prod-grid,.comm-grid{grid-template-columns:repeat(2,1fr);}
+  .scene-grid{grid-template-columns:1fr 1fr;}
+  .two-col{grid-template-columns:1fr;gap:44px;}
+  .band{grid-template-columns:repeat(2,1fr);gap:34px;}
+  .foot-top{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:720px){
+  nav.menu{display:none;}
+  .nav-cta{display:none;}
+  .burger{display:flex;}
+  .nav-inner{padding:16px 18px;}
+  section.hero{padding:130px 18px 70px;}
+  section.block{padding:76px 18px;}
+  .grid-3,.prod-grid,.comm-grid,.scene-grid{grid-template-columns:1fr;}
+  .scene-tile.tall{grid-row:span 1;}
+  .band{padding:36px 22px;}
+  .band .item b{font-size:30px;}
+  .hero-stats{gap:28px;}
+  .cta-box{padding:52px 26px;}
+  .foot-top{grid-template-columns:1fr;}
+  .foot-bot{flex-direction:column;}
+  .tag-a{right:0;}
+  .tag-b{left:0;}
+}
+</style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<div class="ambient"></div>
+<div class="stars"></div>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#top">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#04101f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 L21 7 V17 L12 22 L3 17 V7 Z"/>
+          <circle cx="12" cy="12" r="3.2"/>
+        </svg>
+      </span>
+      <span>天堂<b>无人</b>极品</span>
+    </a>
+    <nav class="menu">
+      <a href="#features">核心能力</a>
+      <a href="#scenes">场景光谱</a>
+      <a href="#story">品牌历程</a>
+      <a href="#products">产品系列</a>
+      <a href="#community">创作者社区</a>
+    </nav>
+    <a class="nav-cta" href="#contact">预约体验</a>
+    <div class="burger" id="burger"><i></i><i></i><i></i></div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-wrap">
+    <div class="hero-copy">
+      <div class="hero-badge reveal"><span class="dot"></span>无人之境 · 影像新生</div>
+      <h1 class="hero-title reveal">天堂无人极品<br><span class="grad">抵达无人抵达之境</span></h1>
+      <p class="hero-sub reveal">
+        当飞行器穿越云层之上，当镜头抵达人类双脚难以丈量的角落，
+        <strong>天堂无人极品</strong>用智能无人影像系统，
+        把地球上最极致的画面带到你眼前。每一次起飞，都是一次对未知的礼赞。
+      </p>
+      <div class="hero-actions reveal">
+        <a class="btn btn-primary" href="#products">
+          探索产品
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#scenes">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          观看样片
+        </a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="stat"><b>1.8M+</b><span>社区创作者</span></div>
+        <div class="stat"><b>96</b><span>覆盖国家与地区</span></div>
+        <div class="stat"><b>42亿</b><span>累计观影次数</span></div>
+        <div class="stat"><b>8K</b><span>旗舰分辨率</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal">
+      <div class="viewer-card">
+        <svg class="scene" viewBox="0 0 400 340" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0b1a30"/>
+              <stop offset="0.55" stop-color="#123a5c"/>
+              <stop offset="1" stop-color="#1e5a7a"/>
+            </linearGradient>
+            <linearGradient id="mtn1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1b3f5e"/>
+              <stop offset="1" stop-color="#0b1a2a"/>
+            </linearGradient>
+            <linearGradient id="mtn2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2a5f7d"/>
+              <stop offset="1" stop-color="#102634"/>
+            </linearGradient>
+            <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffd28a"/>
+              <stop offset="1" stop-color="#ff8a5c"/>
+            </linearGradient>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="rgba(255,200,140,0.55)"/>
+              <stop offset="1" stop-color="rgba(255,200,140,0)"/>
+            </radialGradient>
+          </defs>
+          <rect width="400" height="340" fill="url(#sky)"/>
+          <circle cx="290" cy="96" r="90" fill="url(#glow)"/>
+          <circle cx="290" cy="96" r="26" fill="url(#sun)"/>
+          <g opacity="0.85">
+            <circle cx="60" cy="52" r="1.4" fill="#dff2ff"/>
+            <circle cx="120" cy="88" r="1.1" fill="#dff2ff"/>
+            <circle cx="200" cy="40" r="1.3" fill="#dff2ff"/>
+            <circle cx="340" cy="40" r="1" fill="#dff2ff"/>
+            <circle cx="30" cy="120" r="1" fill="#dff2ff"/>
+            <circle cx="250" cy="150" r="1.1" fill="#dff2ff"/>
+          </g>
+          <path d="M0 240 L70 176 L120 214 L180 158 L240 216 L310 168 L400 236 L400 340 L0 340 Z" fill="url(#mtn1)" opacity="0.9"/>
+          <path d="M0 280 L60 236 L130 272 L200 226 L270 274 L340 232 L400 276 L400 340 L0 340 Z" fill="url(#mtn2)"/>
+          <path d="M180 158 L192 178 L172 176 Z" fill="#eaf6ff" opacity="0.65"/>
+          <path d="M310 168 L322 188 L300 186 Z" fill="#eaf6ff" opacity="0.55"/>
+          <path d="M60 236 L72 254 L50 252 Z" fill="#eaf6ff" opacity="0.4"/>
+          <!-- drone -->
+          <g transform="translate(150,110)">
+            <g opacity="0.9">
+              <ellipse cx="-26" cy="0" rx="20" ry="4" fill="none" stroke="rgba(180,230,255,0.7)" stroke-width="1.4"/>
+              <ellipse cx="26" cy="0" rx="20" ry="4" fill="none" stroke="rgba(180,230,255,0.7)" stroke-width="1.4"/>
+              <line x1="-14" y1="0" x2="14" y2="0" stroke="rgba(200,240,255,0.9)" stroke-width="2"/>
+              <rect x="-8" y="-5" width="16" height="11" rx="4" fill="#e8f6ff"/>
+              <circle cx="0" cy="9" r="3.6" fill="#38bdf8"/>
+              <circle cx="0" cy="9" r="6" fill="none" stroke="rgba(56,189,248,0.5)" stroke-width="1"/>
+            </g>
+          </g>
+          <line x1="150" y1="120" x2="150" y2="150" stroke="rgba(56,189,248,0.28)" stroke-width="1.2" stroke-dasharray="3 4"/>
+        </svg>
+        <div class="hud">
+          <div class="rec"><i></i>REC · 8K / 60FPS</div>
+          <div>ALT 2,847m</div>
+        </div>
+        <div class="hud-bot">
+          <div class="big">LIVE</div>
+          <div>N 30°14' · E 118°09'</div>
+        </div>
+        <div class="viewer-overlay"></div>
+      </div>
+      <div class="floating-tag tag-a">✈ 全地形自适应</div>
+      <div class="floating-tag tag-b">◈ HDR 动态影像</div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-track">
+    <span>无人之境影像</span><span>极致画质</span><span>智能避障</span><span>全场景适配</span>
+    <span>创作者生态</span><span>云端协作</span><span>深海 · 高空 · 极地</span><span>8K 超高清</span>
+    <span>无人之境影像</span><span>极致画质</span><span>智能避障</span><span>全场景适配</span>
+    <span>创作者生态</span><span>云端协作</span><span>深海 · 高空 · 极地</span><span>8K 超高清</span>
+  </div>
+</div>
+
+<section class="block" id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Core Capabilities</div>
+      <h2 class="sec-title">让每一次飞行<br>都成为极致的表达</h2>
+      <p class="sec-desc">天堂无人极品以影像为内核，把感知、稳定、智能与美学熔铸于一体，为每一位热爱探索的人提供专业级无人影像能力。</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature reveal">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3>极致视觉引擎</h3>
+        <p>自研影像算法搭配大尺寸传感器，从微光到强光、从静态到高速运动，都能还原肉眼所见的真实层次与色彩。</p>
+      </div>
+      <div class="feature reveal">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="5"/></svg>
+        </div>
+        <h3>全向感知避障</h3>
+        <p>六向视觉与毫米波协同感知，复杂地形中依然保持稳定航线，让创作者专注于构图，而不是担心碰撞。</p>
+      </div>
+      <div class="feature reveal">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6h-6"/></svg>
+        </div>
+        <h3>智能跟随轨迹</h3>
+        <p>基于场景理解的智能跟拍，人物、车辆、动物自动识别并结合地形规划最优路径，运动镜头一次成型。</p>
+      </div>
+      <div class="feature reveal">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>
+        </div>
+        <h3>云端素材协作</h3>
+        <p>拍摄即同步，团队可在同一时间轴内审片、标注与二次创作，让跨越山海的协作像面对面一样自然。</p>
+      </div>
+      <div class="feature reveal">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+        </div>
+        <h3>超长续航体系</h3>
+        <p>高密度电池与空气动力学结构协同优化，单次续航突破 48 分钟，配合快充让创作节奏不被打断。</p>
+      </div>
+      <div class="feature reveal">
+        <div class="f-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <h3>毫秒级响应</h3>
+        <p>低延迟图传与预测式控制算法，让操纵手感与画面反馈近乎同步，复杂运镜也能精准落点。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block spectrum" id="scenes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Scene Spectrum</div>
+      <h2 class="sec-title">从云端到深海<br>无人之境皆是主场</h2>
+      <p class="sec-desc">无论是极地冰原的寂静、峡谷深处的风声，还是城市上空的霓虹，天堂无人极品都能以最恰当的方式记录。</p>
+    </div>
+
+    <div class="scene-grid reveal">
+      <div class="scene-tile tall">
+        <svg viewBox="0 0 300 440" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="s1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0a1a2e"/><stop offset="1" stop-color="#0e3a52"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="440" fill="url(#s1)"/>
+          <circle cx="230" cy="90" r="42" fill="rgba(255,210,150,0.18)"/>
+          <circle cx="230" cy="90" r="18" fill="#ffcf8a"/>
+          <path d="M0 300 L60 240 L110 280 L170 220 L230 278 L300 236 L300 440 L0 440 Z" fill="#0b2236"/>
+          <path d="M0 350 L70 300 L140 340 L210 290 L300 340 L300 440 L0 440 Z" fill="#081a29"/>
+          <g opacity="0.8" stroke="rgba(140,210,255,0.5)" stroke-width="1" fill="none">
+            <path d="M150 210 q-12 -10 -24 0"/><path d="M150 218 q-14 -10 -28 0"/>
+          </g>
+        </svg>
+        <div class="label">极限山地 · 高原航拍<small>ALTITUDE / RIDGE</small></div>
+      </div>
+      <div class="scene-tile">
+        <svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="s2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#123a5c"/><stop offset="1" stop-color="#0a1a2e"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="220" fill="url(#s2)"/>
+          <g stroke="rgba(120,200,255,0.35)" stroke-width="1.2" fill="none">
+            <path d="M0 160 q40 -30 80 0 t80 0 t80 0 t60 0"/>
+            <path d="M0 180 q40 -30 80 0 t80 0 t80 0 t60 0"/>
+            <path d="M0 200 q40 -30 80 0 t80 0 t80 0 t60 0"/>
+          </g>
+          <circle cx="70" cy="70" r="26" fill="rgba(56,189,248,0.2)"/>
+          <circle cx="70" cy="70" r="8" fill="#7fd4ff"/>
+        </svg>
+        <div class="label">深海潜行<small>OCEAN / DEPTH</small></div>
+      </div>
+      <div class="scene-tile">
+        <svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="s3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1a1030"/><stop offset="1" stop-color="#0a1020"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="220" fill="url(#s3)"/>
+          <g fill="rgba(167,139,250,0.5)">
+            <rect x="40" y="120" width="26" height="100"/>
+            <rect x="90" y="90" width="20" height="130"/>
+            <rect x="140" y="140" width="30" height="80"/>
+            <rect x="200" y="100" width="22" height="120"/>
+            <rect x="250" y="130" width="26" height="90"/>
+          </g>
+          <g fill="rgba(56,189,248,0.85)">
+            <rect x="44" y="130" width="4" height="6"/><rect x="56" y="150" width="4" height="6"/>
+            <rect x="94" y="104" width="4" height="6"/><rect x="100" y="130" width="4" height="6"/>
+            <rect x="146" y="152" width="4" height="6"/><rect x="160" y="172" width="4" height="6"/>
+            <rect x="206" y="116" width="4" height="6"/><rect x="254" y="144" width="4" height="6"/>
+          </g>
+        </svg>
+        <div class="label">城市霓虹<small>URBAN / NEON</small></div>
+      </div>
+      <div class="scene-tile">
+        <svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="s4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0c2a3a"/><stop offset="1" stop-color="#04121c"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="220" fill="url(#s4)"/>
+          <g fill="#dff4ff" opacity="0.9">
+            <path d="M30 150 L60 100 L90 150 Z"/>
+            <path d="M90 150 L120 88 L150 150 Z"/>
+            <path d="M150 150 L180 104 L210 150 Z"/>
+            <path d="M210 150 L240 92 L270 150 Z"/>
+          </g>
+          <rect x="0" y="150" width="300" height="70" fill="#061820"/>
+          <g fill="rgba(120,220,255,0.5)">
+            <rect x="40" y="170" width="60" height="3"/>
+            <rect x="130" y="184" width="90" height="3"/>
+            <rect x="200" y="166" width="50" height="3"/>
+          </g>
+        </svg>
+        <div class="label">极地冰原<small>POLAR / ICE</small></div>
+      </div>
+      <div class="scene-tile">
+        <svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="s5" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#0e2c1c"/><stop offset="1" stop-color="#06130b"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="220" fill="url(#s5)"/>
+          <g stroke="rgba(52,211,153,0.45)" stroke-width="1.4" fill="none">
+            <path d="M0 200 q50 -120 100 -80 t100 -40 t100 20"/>
+            <path d="M0 220 q60 -110 110 -70 t100 -40 t90 12"/>
+          </g>
+          <circle cx="230" cy="60" r="30" fill="rgba(52,211,153,0.15)"/>
+          <circle cx="230" cy="60" r="9" fill="#5fe6b0"/>
+        </svg>
+        <div class="label">雨林秘境<small>JUNGLE / MIST</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="story">
+  <div class="wrap">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="sec-kicker">Our Journey</div>
+        <h2 class="sec-title">一群相信<br>「无人能至」的人</h2>
+        <p class="sec-desc" style="margin-bottom:46px;">
+          天堂无人极品诞生于一次失败的登山拍摄。器材在风雪中失灵，壮美的画面永远留在了记忆里。
+          于是我们决定：造出能够抵达任何地方、并且忠实地记录的影像系统。
+        </p>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-year">2016</div>
+            <h4>从一次失手开始</h4>
+            <p>创始团队在高原完成第一次原型机试飞，机身只有手掌大小，却记录下了第一段可用的 4K 影像。</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">2018</div>
+            <h4>全向感知系统成型</h4>
+            <p>完成六向视觉感知的技术验证，复杂地形下的稳定飞行成为品牌最早被认可的能力标签。</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">2021</div>
+            <h4>创作者社区启航</h4>
+            <p>开放素材与航线共享平台，来自 60 多个国家的创作者开始用同一套系统记录彼此看不见的世界。</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">2023</div>
+            <h4>8K 影像旗舰发布</h4>
+            <p>首款支持 8K 高动态影像的机型上线，同期开放云端协同剪辑，创作流程被重新定义。</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">2025</div>
+            <h4>无人之境全球计划</h4>
+            <p>联合全球创作者深入极地、深海与高原，用影像建立一份属于这个时代的「无人之境档案」。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="tech-card">
+          <div style="margin-bottom:28px;">
+            <div style="font-size:14px;color:var(--text-faint);letter-spacing:2px;margin-bottom:6px;">TECH INDEX</div>
+            <div style="font-size:20px;font-weight:700;">核心能力指数</div>
+          </div>
+          <div class="tech-row">
+            <div class="top"><span>影像解析力</span><span>98%</span></div>
+            <div class="bar"><i data-w="98"></i></div>
+          </div>
+          <div class="tech-row">
+            <div class="top"><span>避障感知精度</span><span>95%</span></div>
+            <div class="bar"><i data-w="95"></i></div>
+          </div>
+          <div class="tech-row">
+            <div class="top"><span>图传稳定性</span><span>97%</span></div>
+            <div class="bar"><i data-w="97"></i></div>
+          </div>
+          <div class="tech-row">
+            <div class="top"><span>续航表现</span><span>91%</span></div>
+            <div class="bar"><i data-w="91"></i></div>
+          </div>
+          <div class="tech-row">
+            <div class="top"><span>智能跟随</span><span>93%</span></div>
+            <div class="bar"><i data-w="93"></i></div>
+          </div>
+          <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--glass-line);font-size:13.5px;color:var(--text-dim);">
+            数据来自天堂无人极品实验室在多种典型场景下的实测均值，随固件版本持续迭代。
+          </div>
+        </div>
+
+        <div class="band" style="grid-template-columns:1fr 1fr;margin-top:22px;">
+          <div class="item"><b>1280+</b><span>专业创作者</span></div>
+          <div class="item"><b>24h</b><span>云端渲染响应</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="products">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Product Line</div>
+      <h2 class="sec-title">为每一种极致<br>准备一台机器</h2>
+      <p class="sec-desc">从轻量随身到旗舰重载，天堂无人极品的每一条产品线都围绕一个目标：让影像表达不被设备限制。</p>
+    </div>
+
+    <div class="prod-grid">
+      <div class="prod reveal">
+        <div class="badge">LIGHT · 轻量系列</div>
+        <h3>极品 Mini 航迹</h3>
+        <div class="price"><b>¥4,299</b> 起</div>
+        <ul>
+          <li>折叠机身，单手可握</li>
+          <li>4K / 60fps 稳定影像</li>
+          <li>单次续航 34 分钟</li>
+          <li>智能跟随与一键短片</li>
+        </ul>
+      </div>
+      <div class="prod reveal">
+        <div class="badge">PRO · 专业系列</div>
+        <h3>极品 Pro 无界</h3>
+        <div class="price"><b>¥8,999</b> 起</div>
+        <ul>
+          <li>一英寸大底传感器</li>
+          <li>8K / 30fps 高动态影像</li>
+          <li>六向感知全向避障</li>
+          <li>低延迟 20km 图传</li>
+        </ul>
+      </div>
+      <div class="prod reveal">
+        <div class="badge">CINE · 电影系列</div>
+        <h3>极品 Cine 境域</h3>
+        <div class="price"><b>¥21,999</b> 起</div>
+        <ul>
+          <li>全画幅电影级传感器</li>
+          <li>RAW 内录与高帧率</li>
+          <li>可换镜头影像系统</li>
+          <li>双操作员协同模式</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="band reveal" style="margin-top:56px;">
+      <div class="item"><b>1.8M</b><span>社区创作者</span></div>
+      <div class="item"><b>96</b><span>覆盖国家地区</span></div>
+      <div class="item"><b>42亿</b><span>累计观影</span></div>
+      <div class="item"><b>8K</b><span>旗舰分辨率</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="community" style="background:linear-gradient(180deg,transparent,rgba(10,18,32,0.5),transparent);">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Creator Community</div>
+      <h2 class="sec-title">他们的镜头<br>正在抵达无人之境</h2>
+      <p class="sec-desc">每一个画面背后，都是一次真实的出发。天堂无人极品社区里，创作者们分享航线、素材与故事。</p>
+    </div>
+    <div class="comm-grid">
+      <div class="quote reveal">
+        <p>“在海拔五千米的垭口起飞，风大得几乎站不稳，但画面稳得让我以为自己在看别人的作品。那一刻我知道，设备真的会替你抵达。” </p>
+        <div class="who">
+          <div class="avatar">林</div>
+          <div class="meta"><b>林川</b><span>高原影像创作者</span></div>
+        </div>
+      </div>
+      <div class="quote reveal">
+        <p>“我拍渔村十年了，海面之上的角度一直是空白。天堂无人极品让我第一次从浪尖的高度看自己的家乡，那是一种说不出的震撼。”</p>
+        <div class="who">
+          <div class="avatar" style="background:linear-gradient(135deg,#34d399,#38bdf8);">周</div>
+          <div class="meta"><b>周屿</b><span>纪录片导演</span></div>
+        </div>
+      </div>
+      <div class="quote reveal">
+        <p>“云端协作对我们团队太重要了。三个人分处三座城市，同一条时间线上剪同一个片子，效率比过去高了一倍不止。”</p>
+        <div class="who">
+          <div class="avatar" style="background:linear-gradient(135deg,#f472b6,#a78bfa);">陈</div>
+          <div class="meta"><b>陈以安</b><span>影像工作室主理人</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;" class="reveal">
+      <div style="padding:30px 28px;border-radius:18px;background:rgba(14,24,40,0.55);border:1px solid var(--glass-line);">
+        <div style="font-size:13px;color:var(--accent);letter-spacing:2px;margin-bottom:12px;">航线共享</div>
+        <h4 style="font-size:18px;margin-bottom:10px;">一键载入他人航线</h4>
+        <p style="font-size:14px;color:var(--text-dim);">社区内的公开航线可一键载入设备，抵达同样的角度，从不同的视角继续创作。</p>
+      </div>
+      <div style="padding:30px 28px;border-radius:18px;background:rgba(14,24,40,0.55);border:1px solid var(--glass-line);">
+        <div style="font-size:13px;color:var(--accent-2);letter-spacing:2px;margin-bottom:12px;">素材协作</div>
+        <h4 style="font-size:18px;margin-bottom:10px;">同框联合作业</h4>
+        <p style="font-size:14px;color:var(--text-dim);">多位创作者可在同一素材库内协作标注、调色与剪辑，作品署名为团队共同所有。</p>
+      </div>
+      <div style="padding:30px 28px;border-radius:18px;background:rgba(14,24,40,0.55);border:1px solid var(--glass-line);">
+        <div style="font-size:13px;color:var(--accent-3);letter-spacing:2px;margin-bottom:12px;">创作激励</div>
+        <h4 style="font-size:18px;margin-bottom:10px;">无人之境计划</h4>
+        <p style="font-size:14px;color:var(--text-dim);">每年支持一批创作者深入极端环境进行影像采集，作品将收录进无人之境档案。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-final" id="contact">
+  <div class="cta-box reveal">
+    <h2>下一段无人之境，由你定义</h2>
+    <p>预约一次体验，让天堂无人极品带你抵达从未想过的角度。</p>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="#top" onclick="alert('预约已记录，我们将尽快与你联系（演示页面）');return false;">
+        立即预约体验
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#community">加入创作者社区</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="logo" href="#top">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#04101f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 L21 7 V17 L12 22 L3 17 V7 Z"/>
+              <circle cx="12" cy="12" r="3.2"/>
+            </svg>
+          </span>
+          <span>天堂<b>无人</b>极品</span>
+        </a>
+        <p>以无人影像抵达无人之境，用极致画面记录这个世界的每一处壮美。</p>
+      </div>
+      <div class="foot-col">
+        <h5>产品</h5>
+        <a href="#products">极品 Mini 航迹</a>
+        <a href="#products">极品 Pro 无界</a>
+        <a href="#products">极品 Cine 境域</a>
+        <a href="#features">核心能力</a>
+      </div>
+      <div class="foot-col">
+        <h5>社区</h5>
+        <a href="#community">创作者故事</a>
+        <a href="#community">航线共享</a>
+        <a href="#community">无人之境计划</a>
+        <a href="#scenes">场景光谱</a>
+      </div>
+      <div class="foot-col">
+        <h5>关于</h5>
+        <a href="#story">品牌历程</a>
+        <a href="#contact">预约体验</a>
+        <a href="#contact">商务合作</a>
+        <a href="#top">返回顶部</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div>© 2025 天堂无人极品 · 保留所有权利</div>
+      <div class="links">
+        <a href="#top">隐私政策</a>
+        <a href="#top">服务条款</a>
+        <a href="#top">影像规范</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* nav scroll */
+  var nav = document.getElementById('nav');
+  function onScroll(){
+    if(window.scrollY > 40){ nav.classList.add('scrolled'); }
+    else{ nav.classList.remove('scrolled'); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* burger (mobile simple toggle) */
+  var burger = document.getElementById('burger');
+  var menu = document.querySelector('nav.menu');
+  if(burger){
+    burger.addEventListener('click', function(){
+      if(menu.style.display === 'flex'){
+        menu.style.display = '';
+      } else {
+        menu.style.display = 'flex';
+        menu.style.position = 'absolute';
+        menu.style.top = '68px';
+        menu.style.right = '18px';
+        menu.style.flexDirection = 'column';
+        menu.style.background = 'rgba(8,15,26,0.96)';
+        menu.style.padding = '18px 24px';
+        menu.style.borderRadius = '14px';
+        menu.style.border = '1px solid rgba(120,180,255,0.16)';
+        menu.style.gap = '16px';
+        menu.style.zIndex = '200';
+        menu.querySelectorAll('a').forEach(function(a){
+          a.addEventListener('click', function(){ menu.style.display = ''; });
+        });
+      }
+    });
+  }
+
+  /* reveal on scroll */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    revealEls.forEach(function(el, i){
+      el.style.transitionDelay = (Math.min(i % 6, 5) * 0.06) + 's';
+      io.observe(el);
+    });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* tech bars */
+  var bars = document.querySelectorAll('.bar i');
+  function fillBars(){
+    bars.forEach(function(b){
+      var w = b.getAttribute('data-w');
+      if(w){ b.style.width = w + '%'; }
+    });
+  }
+  var techCard = document.querySelector('.tech-card');
+  if(techCard && 'IntersectionObserver' in window){
+    var bo = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          fillBars();
+          bo.disconnect();
+        }
+      });
+    }, {threshold:0.3});
+    bo.observe(techCard);
+  } else {
+    fillBars();
+  }
+
+  /* feature hover glow follow */
+  document.querySelectorAll('.feature').forEach(function(card){
+    card.addEventListener('mousemove', function(ev){
+      var r = card.getBoundingClientRect();
+      var x = ((ev.clientX - r.left) / r.width) * 100;
+      var y = ((ev.clientY - r.top) / r.height) * 100;
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+  });
+
+  /* floating tag parallax on hero */
+  var visual = document.querySelector('.hero-visual');
+  if(visual && window.matchMedia('(pointer:fine)').matches){
+    visual.addEventListener('mousemove', function(ev){
+      var r = visual.getBoundingClientRect();
+      var dx = (ev.clientX - r.left) / r.width - 0.5;
+      var dy = (ev.clientY - r.top) / r.height - 0.5;
+      var card = visual.querySelector('.viewer-card');
+      if(card){
+        card.style.transform = 'rotateY(' + (dx * 6) + 'deg) rotateX(' + (-dy * 6) + 'deg)';
+      }
+    });
+    visual.addEventListener('mouseleave', function(){
+      var card = visual.querySelector('.viewer-card');
+      if(card){ card.style.transform = ''; }
+    });
+  }
+
+  /* smooth anchor for older browsers fallback */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(ev){
+      var id = a.getAttribute('href');
+      if(id.length > 1){
+        var target = document.querySelector(id);
+        if(target){
+          ev.preventDefault();
+          target.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      }
+    });
+  });
+
+  /* strip duplicate guard (in case only one set present) */
+  var track = document.querySelector('.strip-track');
+  if(track){
+    var spans = track.querySelectorAll('span');
+    if(spans.length && spans.length < 16){
+      var html = track.innerHTML;
+      track.innerHTML = html + html;
+    }
+  }
+
+  /* subtle counter animation for band numbers */
+  var counters = document.querySelectorAll('.band .item b');
+  function animateCounter(el){
+    var text = el.textContent.trim();
+    var match = text.match(/^([\d.]+)/);
+    if(!match){ return; }
+    var num = parseFloat(match[1]);
+    if(isNaN(num)){ return; }
+    var suffix = text.slice(match[1].length);
+    var decimals = (match[1].split('.')[1] || '').length;
+    var start = 0;
+    var dur = 1400;
+    var t0 = null;
+    function step(ts){
+      if(!t0){ t0 = ts; }
+      var p = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = (start + (num - start) * eased).toFixed(decimals);
+      el.textContent = val + suffix;
+      if(p < 1){ requestAnimationFrame(step); }
+      else { el.textContent = match[1] + suffix; }
+    }
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window){
+    var co = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          animateCounter(e.target);
+          co.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.6});
+    counters.forEach(function(c){ co.observe(c); });
+  }
+})();
+</script>
+</body>
+        </html>
